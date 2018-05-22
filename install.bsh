@@ -1,0 +1,20 @@
+#!/bin/bash
+
+WD="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+INST_DIR="$HOME/.oh-my-tmux"
+TMUX_CONF="$HOME/.tmux.conf"
+
+# backup pre-existing
+if [ -r $TMUX_CONF ]; then
+	if [ -L $TMUX_CONF ]; then
+		ln -sf $TMUX_CONF "${TMUX_CONF}.bak.$(ls -l ${TMUX_CONF}.bak* 2>/dev/null | wc -l)"
+	else
+		cp $TMUX_CONF "${TMUX_CONF}.bak.$(ls -l ${TMUX_CONF}.bak* 2>/dev/null | wc -l)"
+	fi
+fi
+
+rm -rf "$INST_DIR"
+ln -sf "$WD" "$INST_DIR"
+
+ln -sf "$INST_DIR/tmux.conf" "$TMUX_CONF"
+
