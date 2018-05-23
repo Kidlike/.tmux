@@ -8,22 +8,27 @@
 set -e
 
 WD="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-INST_DIR="$HOME/.oh-my-tmux"
-TMUX_CONF="$HOME/.tmux.conf"
+INST_DIR="${HOME}/.oh-my-tmux"
+TMUX_CONF="${HOME}/.tmux.conf"
+
+# support for curl piped execution
+if [ ! -r "${WD}/oh-my-tmux.sh" ]; then
+    git clone https://github.com/Kidlike/oh-my-tmux ${INST_DIR}
+    WD="${INST_DIR}"
+fi
 
 # backup pre-existing
-if [ -z "$SKIP_BACKUP" ]; then
-  if [ -r $TMUX_CONF ]; then
+if [ -z "${SKIP_BACKUP}" ]; then
+  if [ -r ${TMUX_CONF} ]; then
     BACKUP_NAME="${TMUX_CONF}.bak.$(ls -l ${TMUX_CONF}.bak* 2>/dev/null | wc -l)"
-    cat $TMUX_CONF > $BACKUP_NAME
+    cat ${TMUX_CONF} > ${BACKUP_NAME}
   fi
 fi
 
 # skip step if already at INST_DIR
-if [ "$(realpath $WD)" != "$(realpath $INST_DIR)" ]; then
-  rm -rf "$INST_DIR"
-  ln -sf "$WD" "$INST_DIR"
+if [ "$(realpath ${WD})" != "$(realpath ${INST_DIR})" ]; then
+  rm -rf "${INST_DIR}"
+  ln -sf "${WD}" "${INST_DIR}"
 fi
 
-ln -sf "$INST_DIR/tmux.conf" "$TMUX_CONF"
-
+ln -sf "${INST_DIR}/tmux.conf" "${TMUX_CONF}"
