@@ -11,7 +11,7 @@
 # exit the script if any statement returns a non-true return value
 set -e
 
-\. "$HOME/.tmux/oh-my-tmux.local.properties"
+\. "$HOME/.oh-my-tmux/oh-my-tmux.local.properties"
 
 export LC_NUMERIC=C
 
