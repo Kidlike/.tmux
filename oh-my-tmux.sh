@@ -95,6 +95,8 @@ EOF
       ;;
     *Linux*)
       while IFS= read -r batpath; do
+        grep -i -q device "$batpath/scope" 2> /dev/null && continue
+
         if [ x"$discharging" != x"true" ]; then
           discharging=$(grep -qi "discharging" "$batpath/status" && echo "true" || echo "false")
         fi
@@ -141,7 +143,7 @@ EOF
       ;;
   esac
   charge=$(awk -v charge="$charge" -v count="$count" 'BEGIN { print charge / count }')
-  if [ "$charge" -eq 0 ]; then
+  if [ "$charge" == "0" ]; then
     tmux  set -ug '@battery_status'  \;\
           set -ug '@battery_bar'     \;\
           set -ug '@battery_hbar'    \;\
